@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A321neo Engine Hours & Cycles Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen p-8">
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-lg shadow-xl p-8">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">A321neo Engine Hours & Cycles Calculator</h1>
+            <p class="text-gray-600 mb-6">Calculate estimated engine hours and cycles based on aircraft age and airline utilization</p>
+            
+            <div class="space-y-6">
+                <!-- Airline Selection -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Select Airline</label>
+                    <select id="airline" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <option value="latam">LATAM Brazil</option>
+                        <option value="easyjet">easyJet</option>
+                        <option value="airnz">Air New Zealand</option>
+                        <option value="azul">Azul Linhas Aéreas</option>
+                        <option value="delta">Delta Air Lines</option>
+                    </select>
+                </div>
+
+                <!-- Aircraft Age -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Aircraft Age (years)</label>
+                    <input type="number" id="age" value="3" min="0" max="30" step="0.1" 
+                           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <input type="range" id="ageSlider" value="3" min="0" max="30" step="0.1" 
+                           class="w-full mt-2">
+                </div>
+
+                <!-- Calculate Button -->
+                <button onclick="calculate()" 
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition duration-200">
+                    Calculate Hours & Cycles
+                </button>
+
+                <!-- Results -->
+                <div id="results" class="hidden mt-6 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">Results</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <p class="text-sm text-gray-600">Total Flight Hours</p>
+                            <p id="totalHours" class="text-3xl font-bold text-blue-600">-</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow">
+                            <p class="text-sm text-gray-600">Total Cycles</p>
+                            <p id="totalCycles" class="text-3xl font-bold text-indigo-600">-</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-lg shadow mb-4">
+                        <p class="text-sm text-gray-600">Hours per Cycle Ratio</p>
+                        <p id="ratio" class="text-2xl font-bold text-green-600">-</p>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-lg shadow">
+                        <h3 class="font-semibold text-gray-700 mb-2">Utilization Profile</h3>
+                        <div id="profile" class="text-sm text-gray-600 space-y-1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Airline Info Cards -->
+        <div class="mt-6 bg-white rounded-lg shadow-xl p-6">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">Airline Utilization Profiles</h2>
+            <div id="airlineInfo" class="text-sm text-gray-600"></div>
+        </div>
+    </div>
+
+    <script>
+        // Airline utilization data
+        const airlines = {
+            latam: {
+                name: "LATAM Brazil",
+                dailyHours: 10.5,
+                dailyCycles: 4.2,
+                avgFlightTime: 2.5,
+                description: "Mixed domestic and regional international operations with medium-haul routes",
+                routes: "São Paulo-Lima, domestic Brazilian network"
+            },
+            easyjet: {
+                name: "easyJet",
+                dailyHours: 11.5,
+                dailyCycles: 5.8,
+                avgFlightTime: 2.0,
+                description: "High-intensity short-haul European operations with quick turnarounds",
+                routes: "Intra-European network, point-to-point model"
+            },
+            airnz: {
+                name: "Air New Zealand",
+                dailyHours: 9.0,
+                dailyCycles: 3.0,
+                avgFlightTime: 3.0,
+                description: "Mix of domestic NZ and trans-Tasman routes with some longer sectors",
+                routes: "Auckland-Sydney, domestic NZ network"
+            },
+            azul: {
+                name: "Azul Linhas Aéreas",
+                dailyHours: 10.8,
+                dailyCycles: 4.5,
+                avgFlightTime: 2.4,
+                description: "Primarily domestic Brazilian operations with point-to-point focus",
+                routes: "Extensive domestic Brazilian network"
+            },
+            delta: {
+                name: "Delta Air Lines",
+                dailyHours: 10.2,
+                dailyCycles: 3.8,
+                avgFlightTime: 2.7,
+                description: "Transcontinental and medium-haul domestic US operations",
+                routes: "Coast-to-coast US, hub-and-spoke network"
+            }
+        };
+
+        // Sync slider and input
+        document.getElementById('age').addEventListener('input', (e) => {
+            document.getElementById('ageSlider').value = e.target.value;
+        });
+        document.getElementById('ageSlider').addEventListener('input', (e) => {
+            document.getElementById('age').value = e.target.value;
+        });
+
+        // Update airline info when selection changes
+        document.getElementById('airline').addEventListener('change', updateAirlineInfo);
+
+        function updateAirlineInfo() {
+            const airlineCode = document.getElementById('airline').value;
+            const airline = airlines[airlineCode];
+            
+            document.getElementById('airlineInfo').innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <p class="font-semibold text-gray-800">${airline.name}</p>
+                        <p class="mt-2">${airline.description}</p>
+                        <p class="mt-2 text-xs text-gray-500">Typical routes: ${airline.routes}</p>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Daily utilization:</span>
+                            <span class="font-semibold">${airline.dailyHours} hours</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Daily cycles:</span>
+                            <span class="font-semibold">${airline.dailyCycles} cycles</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Avg flight time:</span>
+                            <span class="font-semibold">${airline.avgFlightTime} hours</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function calculate() {
+            const airlineCode = document.getElementById('airline').value;
+            const age = parseFloat(document.getElementById('age').value);
+            const airline = airlines[airlineCode];
+
+            // Calculate annual hours and cycles (accounting for ~350 operational days/year)
+            const annualHours = airline.dailyHours * 350;
+            const annualCycles = airline.dailyCycles * 350;
+
+            // Calculate totals
+            const totalHours = Math.round(annualHours * age);
+            const totalCycles = Math.round(annualCycles * age);
+            const ratio = (totalHours / totalCycles).toFixed(2);
+
+            // Display results
+            document.getElementById('results').classList.remove('hidden');
+            document.getElementById('totalHours').textContent = totalHours.toLocaleString() + ' hrs';
+            document.getElementById('totalCycles').textContent = totalCycles.toLocaleString();
+            document.getElementById('ratio').textContent = ratio + ' hrs/cycle';
+
+            // Display profile
+            document.getElementById('profile').innerHTML = `
+                <p><strong>Airline:</strong> ${airline.name}</p>
+                <p><strong>Aircraft Age:</strong> ${age.toFixed(1)} years</p>
+                <p><strong>Annual Utilization:</strong> ${annualHours.toLocaleString()} hrs, ${annualCycles.toLocaleString()} cycles</p>
+                <p><strong>Average Flight Duration:</strong> ${airline.avgFlightTime} hours</p>
+                <p class="mt-2 text-xs text-gray-500">Note: Based on ~350 operational days per year. Actual values may vary based on seasonality, fleet management, and operational factors.</p>
+            `;
+        }
+
+        // Initialize
+        updateAirlineInfo();
+        calculate();
+    </script>
+</body>
+</html>
