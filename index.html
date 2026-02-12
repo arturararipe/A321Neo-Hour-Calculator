@@ -17,11 +17,56 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Select Airline</label>
                     <select id="airline" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                        <option value="latam">LATAM Brazil</option>
-                        <option value="easyjet">easyJet</option>
-                        <option value="airnz">Air New Zealand</option>
-                        <option value="azul">Azul Linhas Aéreas</option>
-                        <option value="delta">Delta Air Lines</option>
+                        <optgroup label="North America">
+                            <option value="delta">Delta Air Lines</option>
+                            <option value="american">American Airlines</option>
+                            <option value="united">United Airlines</option>
+                            <option value="jetblue">JetBlue Airways</option>
+                            <option value="alaska">Alaska Airlines</option>
+                            <option value="spirit">Spirit Airlines</option>
+                            <option value="frontier">Frontier Airlines</option>
+                            <option value="aircanada">Air Canada</option>
+                            <option value="volaris">Volaris</option>
+                            <option value="vivaaerobus">VivaAerobus</option>
+                        </optgroup>
+                        <optgroup label="Latin America">
+                            <option value="latam">LATAM Airlines</option>
+                            <option value="azul">Azul Linhas Aéreas</option>
+                            <option value="copa">Copa Airlines</option>
+                            <option value="avianca">Avianca</option>
+                        </optgroup>
+                        <optgroup label="Europe">
+                            <option value="easyjet">easyJet</option>
+                            <option value="wizz">Wizz Air</option>
+                            <option value="lufthansa">Lufthansa</option>
+                            <option value="turkishairlines">Turkish Airlines</option>
+                            <option value="airfrance">Air France</option>
+                            <option value="iberia">Iberia</option>
+                            <option value="vueling">Vueling</option>
+                            <option value="tap">TAP Air Portugal</option>
+                            <option value="sas">Scandinavian Airlines (SAS)</option>
+                            <option value="aeroflot">Aeroflot</option>
+                        </optgroup>
+                        <optgroup label="Middle East & Africa">
+                            <option value="airarabia">Air Arabia</option>
+                            <option value="flynas">Flynas</option>
+                            <option value="egyptair">EgyptAir</option>
+                        </optgroup>
+                        <optgroup label="Asia-Pacific">
+                            <option value="airnz">Air New Zealand</option>
+                            <option value="jetstar">Jetstar Airways</option>
+                            <option value="virginaustralia">Virgin Australia</option>
+                            <option value="cebu">Cebu Pacific</option>
+                            <option value="airasia">AirAsia</option>
+                            <option value="indigo">IndiGo</option>
+                            <option value="goair">Go First</option>
+                            <option value="vietjet">VietJet Air</option>
+                            <option value="ana">All Nippon Airways</option>
+                            <option value="jal">Japan Airlines</option>
+                            <option value="chinaeastern">China Eastern Airlines</option>
+                            <option value="chinasouthern">China Southern Airlines</option>
+                            <option value="airchina">Air China</option>
+                        </optgroup>
                     </select>
                 </div>
 
@@ -97,40 +142,9 @@
     </div>
 
     <script>
-        // Airline utilization data
+        // Airline utilization data - All major A321neo operators worldwide
         const airlines = {
-            latam: {
-                name: "LATAM Brazil",
-                dailyHours: 10.5,
-                dailyCycles: 4.2,
-                avgFlightTime: 2.5,
-                description: "Mixed domestic and regional international operations with medium-haul routes",
-                routes: "São Paulo-Lima, domestic Brazilian network"
-            },
-            easyjet: {
-                name: "easyJet",
-                dailyHours: 11.5,
-                dailyCycles: 5.8,
-                avgFlightTime: 2.0,
-                description: "High-intensity short-haul European operations with quick turnarounds",
-                routes: "Intra-European network, point-to-point model"
-            },
-            airnz: {
-                name: "Air New Zealand",
-                dailyHours: 9.0,
-                dailyCycles: 3.0,
-                avgFlightTime: 3.0,
-                description: "Mix of domestic NZ and trans-Tasman routes with some longer sectors",
-                routes: "Auckland-Sydney, domestic NZ network"
-            },
-            azul: {
-                name: "Azul Linhas Aéreas",
-                dailyHours: 10.8,
-                dailyCycles: 4.5,
-                avgFlightTime: 2.4,
-                description: "Primarily domestic Brazilian operations with point-to-point focus",
-                routes: "Extensive domestic Brazilian network"
-            },
+            // Americas - North America
             delta: {
                 name: "Delta Air Lines",
                 dailyHours: 10.2,
@@ -138,6 +152,326 @@
                 avgFlightTime: 2.7,
                 description: "Transcontinental and medium-haul domestic US operations",
                 routes: "Coast-to-coast US, hub-and-spoke network"
+            },
+            american: {
+                name: "American Airlines",
+                dailyHours: 10.4,
+                dailyCycles: 3.9,
+                avgFlightTime: 2.7,
+                description: "Hub-and-spoke domestic and Latin America network",
+                routes: "US transcontinental, Miami-Caribbean/Latin America"
+            },
+            united: {
+                name: "United Airlines",
+                dailyHours: 10.3,
+                dailyCycles: 3.9,
+                avgFlightTime: 2.6,
+                description: "Major domestic and trans-Pacific operations",
+                routes: "US transcontinental, West Coast-Hawaii"
+            },
+            jetblue: {
+                name: "JetBlue Airways",
+                dailyHours: 11.2,
+                dailyCycles: 4.8,
+                avgFlightTime: 2.3,
+                description: "High-frequency East Coast and transcontinental operations",
+                routes: "New York-Florida, cross-country"
+            },
+            alaska: {
+                name: "Alaska Airlines",
+                dailyHours: 9.8,
+                dailyCycles: 4.2,
+                avgFlightTime: 2.3,
+                description: "West Coast focus with transcontinental routes",
+                routes: "Seattle hub, West Coast network"
+            },
+            spirit: {
+                name: "Spirit Airlines",
+                dailyHours: 11.8,
+                dailyCycles: 5.2,
+                avgFlightTime: 2.3,
+                description: "Ultra-high utilization ULCC model",
+                routes: "Point-to-point leisure markets"
+            },
+            frontier: {
+                name: "Frontier Airlines",
+                dailyHours: 11.5,
+                dailyCycles: 5.0,
+                avgFlightTime: 2.3,
+                description: "ULCC with high aircraft utilization",
+                routes: "Denver hub, leisure destinations"
+            },
+            aircanada: {
+                name: "Air Canada",
+                dailyHours: 9.5,
+                dailyCycles: 3.6,
+                avgFlightTime: 2.6,
+                description: "Transcontinental Canada and US routes",
+                routes: "Toronto-Vancouver, US destinations"
+            },
+            volaris: {
+                name: "Volaris",
+                dailyHours: 11.0,
+                dailyCycles: 4.7,
+                avgFlightTime: 2.3,
+                description: "Mexican ULCC with high utilization",
+                routes: "Mexico domestic and US routes"
+            },
+            vivaaerobus: {
+                name: "VivaAerobus",
+                dailyHours: 11.3,
+                dailyCycles: 4.9,
+                avgFlightTime: 2.3,
+                description: "Mexican ULCC operations",
+                routes: "Mexico domestic network"
+            },
+            
+            // Americas - Latin America
+            latam: {
+                name: "LATAM Airlines",
+                dailyHours: 10.5,
+                dailyCycles: 4.2,
+                avgFlightTime: 2.5,
+                description: "Mixed domestic and regional international operations",
+                routes: "São Paulo-Lima, domestic Brazilian network"
+            },
+            azul: {
+                name: "Azul Linhas Aéreas",
+                dailyHours: 10.8,
+                dailyCycles: 4.5,
+                avgFlightTime: 2.4,
+                description: "Primarily domestic Brazilian operations",
+                routes: "Extensive domestic Brazilian network"
+            },
+            copa: {
+                name: "Copa Airlines",
+                dailyHours: 9.2,
+                dailyCycles: 3.3,
+                avgFlightTime: 2.8,
+                description: "Panama hub connecting Americas",
+                routes: "PTY hub to North/South America"
+            },
+            avianca: {
+                name: "Avianca",
+                dailyHours: 9.8,
+                dailyCycles: 3.7,
+                avgFlightTime: 2.6,
+                description: "Colombian carrier with regional network",
+                routes: "BOG hub, Latin America network"
+            },
+            
+            // Europe - Western
+            easyjet: {
+                name: "easyJet",
+                dailyHours: 11.5,
+                dailyCycles: 5.8,
+                avgFlightTime: 2.0,
+                description: "High-intensity short-haul European operations",
+                routes: "Intra-European network, point-to-point"
+            },
+            wizz: {
+                name: "Wizz Air",
+                dailyHours: 12.0,
+                dailyCycles: 6.0,
+                avgFlightTime: 2.0,
+                description: "Ultra-high utilization Central/Eastern European ULCC",
+                routes: "Central/Eastern Europe network"
+            },
+            lufthansa: {
+                name: "Lufthansa",
+                dailyHours: 9.8,
+                dailyCycles: 4.2,
+                avgFlightTime: 2.3,
+                description: "Hub operations with European routes",
+                routes: "FRA/MUC hubs, European network"
+            },
+            turkishairlines: {
+                name: "Turkish Airlines",
+                dailyHours: 10.2,
+                dailyCycles: 4.0,
+                avgFlightTime: 2.6,
+                description: "IST hub with extensive network",
+                routes: "Istanbul hub, Europe/Middle East"
+            },
+            airfrance: {
+                name: "Air France",
+                dailyHours: 9.5,
+                dailyCycles: 4.0,
+                avgFlightTime: 2.4,
+                description: "CDG hub operations",
+                routes: "Paris hub, European network"
+            },
+            iberia: {
+                name: "Iberia",
+                dailyHours: 9.7,
+                dailyCycles: 4.1,
+                avgFlightTime: 2.4,
+                description: "MAD hub, European and North Africa",
+                routes: "Madrid hub, Europe/North Africa"
+            },
+            vueling: {
+                name: "Vueling",
+                dailyHours: 11.0,
+                dailyCycles: 5.5,
+                avgFlightTime: 2.0,
+                description: "Spanish LCC with high utilization",
+                routes: "Barcelona base, European network"
+            },
+            tap: {
+                name: "TAP Air Portugal",
+                dailyHours: 9.3,
+                dailyCycles: 3.8,
+                avgFlightTime: 2.4,
+                description: "Lisbon hub, transatlantic routes",
+                routes: "LIS hub, Europe/Brazil/Africa"
+            },
+            sas: {
+                name: "Scandinavian Airlines (SAS)",
+                dailyHours: 9.4,
+                dailyCycles: 3.9,
+                avgFlightTime: 2.4,
+                description: "Nordic hub operations with European network",
+                routes: "CPH/ARN/OSL hubs, European routes"
+            },
+            aeroflot: {
+                name: "Aeroflot",
+                dailyHours: 9.5,
+                dailyCycles: 3.6,
+                avgFlightTime: 2.6,
+                description: "Moscow hub operations",
+                routes: "SVO hub, Russian domestic/Europe"
+            },
+            
+            // Middle East
+            airarabia: {
+                name: "Air Arabia",
+                dailyHours: 11.2,
+                dailyCycles: 5.0,
+                avgFlightTime: 2.2,
+                description: "Middle East LCC with high utilization",
+                routes: "Sharjah hub, Middle East/Asia"
+            },
+            flynas: {
+                name: "Flynas",
+                dailyHours: 10.8,
+                dailyCycles: 4.6,
+                avgFlightTime: 2.3,
+                description: "Saudi Arabian LCC",
+                routes: "Saudi domestic and regional"
+            },
+            egyptair: {
+                name: "EgyptAir",
+                dailyHours: 9.0,
+                dailyCycles: 3.5,
+                avgFlightTime: 2.6,
+                description: "Cairo hub operations",
+                routes: "CAI hub, Middle East/Europe/Africa"
+            },
+            
+            // Asia-Pacific
+            airnz: {
+                name: "Air New Zealand",
+                dailyHours: 9.0,
+                dailyCycles: 3.0,
+                avgFlightTime: 3.0,
+                description: "Domestic NZ and trans-Tasman routes",
+                routes: "Auckland-Sydney, domestic NZ"
+            },
+            jetstar: {
+                name: "Jetstar Airways",
+                dailyHours: 10.8,
+                dailyCycles: 4.3,
+                avgFlightTime: 2.5,
+                description: "Australian LCC operations",
+                routes: "Australian domestic, Asia-Pacific"
+            },
+            virginaustralia: {
+                name: "Virgin Australia",
+                dailyHours: 9.5,
+                dailyCycles: 3.8,
+                avgFlightTime: 2.5,
+                description: "Australian domestic network",
+                routes: "Australian domestic routes"
+            },
+            cebu: {
+                name: "Cebu Pacific",
+                dailyHours: 11.5,
+                dailyCycles: 5.2,
+                avgFlightTime: 2.2,
+                description: "Philippine LCC with high utilization",
+                routes: "Manila hub, Southeast Asia"
+            },
+            airasia: {
+                name: "AirAsia",
+                dailyHours: 11.8,
+                dailyCycles: 5.5,
+                avgFlightTime: 2.1,
+                description: "Southeast Asian ULCC",
+                routes: "ASEAN network, point-to-point"
+            },
+            indigo: {
+                name: "IndiGo",
+                dailyHours: 11.5,
+                dailyCycles: 5.3,
+                avgFlightTime: 2.2,
+                description: "Indian LCC with very high utilization",
+                routes: "Indian domestic network"
+            },
+            goair: {
+                name: "Go First",
+                dailyHours: 11.2,
+                dailyCycles: 5.0,
+                avgFlightTime: 2.2,
+                description: "Indian LCC operations",
+                routes: "Indian domestic routes"
+            },
+            vietjet: {
+                name: "VietJet Air",
+                dailyHours: 11.3,
+                dailyCycles: 5.1,
+                avgFlightTime: 2.2,
+                description: "Vietnamese ULCC",
+                routes: "Vietnam domestic, ASEAN"
+            },
+            ana: {
+                name: "All Nippon Airways",
+                dailyHours: 9.2,
+                dailyCycles: 3.8,
+                avgFlightTime: 2.4,
+                description: "Japanese domestic operations",
+                routes: "Tokyo hubs, Japan domestic"
+            },
+            jal: {
+                name: "Japan Airlines",
+                dailyHours: 9.0,
+                dailyCycles: 3.7,
+                avgFlightTime: 2.4,
+                description: "Japanese domestic network",
+                routes: "Tokyo hubs, Japan domestic"
+            },
+            chinaeastern: {
+                name: "China Eastern Airlines",
+                dailyHours: 10.0,
+                dailyCycles: 4.2,
+                avgFlightTime: 2.4,
+                description: "Chinese domestic operations",
+                routes: "Shanghai hub, China domestic"
+            },
+            chinasouthern: {
+                name: "China Southern Airlines",
+                dailyHours: 10.2,
+                dailyCycles: 4.3,
+                avgFlightTime: 2.4,
+                description: "Extensive Chinese network",
+                routes: "Guangzhou hub, China domestic"
+            },
+            airchina: {
+                name: "Air China",
+                dailyHours: 9.8,
+                dailyCycles: 4.0,
+                avgFlightTime: 2.5,
+                description: "Beijing hub operations",
+                routes: "Beijing hub, China domestic"
             }
         };
 
